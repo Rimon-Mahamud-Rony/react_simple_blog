@@ -1,0 +1,13 @@
+.nav-item {
+  color: black;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: rgb(41, 178, 41);
+}
+
+.nav-item:hover {
+  color: white;
+  background-color: rgb(10, 120, 10);
+}

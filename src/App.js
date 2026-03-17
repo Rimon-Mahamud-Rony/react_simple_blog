@@ -22,14 +22,16 @@ function App() {
     <div className="App">
       <Header />
       <Nav />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/post" element={<NewPost />} />
-        <Route path="/post/:id" element={<PostPage />} />
-        <Route path="/about" element={<About />} />
-        <Route path="*" element={<Missing />} />
-      </Routes>
-      <Footer />
+      <main className="w-full h-screen">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/post" element={<NewPost />} />
+          <Route path="/post/:id" element={<PostPage />} />
+          <Route path="/about" element={<About />} />
+          <Route path="*" element={<Missing />} />
+        </Routes>
+        <Footer />
+      </main>
     </div>
   );
 }
