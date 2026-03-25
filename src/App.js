@@ -8,6 +8,7 @@ import About from "./About";
 import Missing from "./Missing";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {format} from 'date-fns'
 
 /*import { Route, Switch, useHisory } from "react-router-dom";
 {v5	v6
@@ -57,17 +58,58 @@ function App() {
 
   const [search, setSearch] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
+  const [postTitle, setPostTitle] = useState('');
+  const [postBody, setPostBody] = useState('');
+  const navigate = useNavigate();
+
+  /*useEffect(() => {
+    const filteredResults = posts.filter(post =>
+      ((post.body).toLowerCase()).includes(search.toLowerCase()) ||
+      ((post.title).toLowerCase()).includes(search.toLowerCase()));
+
+      setSearchResults(filteredResults.reverse());
+    
+  },[posts, search])*/
+
+  useEffect(() => {
+    const lowerSearch = String(search).toLowerCase();
+
+    const filteredResults = posts.filter(
+      (post) =>
+        String(post.body).toLowerCase().includes(lowerSearch) ||
+        String(post.title).toLowerCase().includes(lowerSearch),
+    );
+
+    setSearchResults([...filteredResults].reverse());
+  }, [posts, search]);
+ 
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const id = posts.length ? posts[posts.length - 1].id : 1;
+    const datetime = format(new Date(), 'dd MMMM, yyyy pp'); 
+    const newPost = { id, title: postTitle, datetime, body: postBody };
+    const allPosts = [...posts, newPost];
+    setPosts(allPosts);
+    setPostTitle('');
+    setPostBody('');
+    navigate("/");
+
+  }
 
   const handleDelete = (id) => {
     //console.log('you are going to delete the post/'+id);
     const postlist = posts.filter(post => post.id !== id);
     setPosts(postlist);
+    //history.push("/");
+    navigate("/");
     // toast.success(`<p style={color:red}>Item deleted successfully</p>`);
     toast.success(
       <div className="w-full text-center">
         <strong style={{ color: "red" }}>Item deleted successfully!</strong>
       </div>,
     );
+    
   }
   
   return (
@@ -76,8 +118,19 @@ function App() {
       <Nav search={search} setsearch={setSearch} />
       <main className="w-full h-screen">
         <Routes>
-          <Route path="/" element={<Home posts={posts} />} />
-          <Route path="/post" element={<NewPost />} />
+          <Route path="/" element={<Home posts={searchResults} />} />
+          <Route
+            path="/post"
+            element={
+              <NewPost
+                handleSubmit={handleSubmit}
+                postTitle={postTitle}
+                setPostTitle={setPostTitle}
+                postBody={postBody}
+                setPostBody={setPostBody}
+              />
+            }
+          />
           <Route
             path="/post/:id"
             element={<PostPage posts={posts} handleDelete={handleDelete} />}
@@ -86,10 +139,7 @@ function App() {
           <Route path="*" element={<Missing />} />
         </Routes>
         <Footer />
-        <ToastContainer
-          position="top-center"
-          autoClose={3000}
-        />
+        <ToastContainer position="top-center" autoClose={3000} />
       </main>
     </div>
   );

@@ -1,13 +1,21 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 
 function Missing() {
   return (
-    <div className='w-full flex flex-col justify-center items-center h-screen p-5'>
-      <p className='w-2/3 p-12 border border-red-500 rounded-lg text-2xl text-center text-red-500 bg-red-100'>
-        404 page not found !!!
+    <div className="flex flex-col justify-center items-center h-80 w-full">
+      <h2 className="text-5xl text-red-700 py-2">Page not found !!</h2>
+      <p className="text-slate-500 py-5 text-xl">Well, thats dissapointing.</p>
+      <p>
+        <Link
+          to="/"
+          className="border border-green-500 bg-green-100 text-green-600 rounded hover:bg-green-600 hover:text-white px-4 py-2"
+        >
+          Visit our Homepage
+        </Link>
       </p>
     </div>
-  )
+  );
 }
 
 export default Missing
